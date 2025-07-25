@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         icon: Icon(Icons.favorite),
                         label: Column(
                           children: [
-                            Text('Favorites!'),
+                            Text('Favorites!!'),
                           ],
                         ),
                       ),
