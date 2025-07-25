@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The container for the current page, with its background color
     // and subtle switching animation.
     var mainArea = ColoredBox(
-      color: colorScheme.surfaceVariant,
+      color: colorScheme.surfaceContainerHighest,
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 200),
         child: page,
@@ -133,11 +133,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     destinations: [
                       NavigationRailDestination(
                         icon: Icon(Icons.home),
-                        label: Text('Home'),
+                        label: Text('Home!'),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.favorite),
-                        label: Text('Favorites'),
+                        label: Column(
+                          children: [
+                            Text('Favorites!'),
+                          ],
+                        ),
                       ),
                     ],
                     selectedIndex: selectedIndex,
