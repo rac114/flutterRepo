@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     destinations: [
                       NavigationRailDestination(
                         icon: Icon(Icons.home),
-                        label: Text('Home!'),
+                        label: Text('Home!!'),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.favorite),
