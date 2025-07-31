@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:device_apps/device_apps.dart';
+import 'package:device_apps_plus/device_apps_plus.dart';
 
 void main() {
   runApp(const MyApp());
