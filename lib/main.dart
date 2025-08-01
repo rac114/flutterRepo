@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:device_apps/device_apps.dart';
+import 'package:installed_apps/app_info.dart';
+import 'package:installed_apps/installed_apps.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,17 +29,14 @@ class AppListScreen extends StatefulWidget {
 }
 
 class _AppListScreenState extends State<AppListScreen> {
-  late Future<List<Application>> _apps;
+  late Future<List<AppInfo>> _apps;
 
   @override
   void initState() {
     super.initState();
     // 앱 목록을 비동기적으로 가져옵니다.
-    _apps = DeviceApps.getInstalledApplications(
-      includeAppIcons: true,
-      includeSystemApps: false, // 시스템 앱은 제외합니다.
-      onlyAppsWithLaunchIntent: true,
-    );
+    // excludeSystemApps: true 로 시스템 앱을 제외합니다.
+    _apps = InstalledApps.getInstalledApps(true, true, "");
   }
 
   @override
@@ -47,7 +45,7 @@ class _AppListScreenState extends State<AppListScreen> {
       appBar: AppBar(
         title: const Text('Installed Apps'),
       ),
-      body: FutureBuilder<List<Application>>(
+      body: FutureBuilder<List<AppInfo>>(
         future: _apps,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,31 +55,30 @@ class _AppListScreenState extends State<AppListScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No apps found.'));
           } else {
-            // 앱 목록을 가져왔을 때 GridView로 표시합니다.
             return GridView.builder(
               padding: const EdgeInsets.all(16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, // 한 줄에 4개의 앱을 표시합니다.
+                crossAxisCount: 4,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 16.0,
-                childAspectRatio: 0.8, // 아이콘과 텍스트의 비율을 조정합니다.
+                childAspectRatio: 0.8,
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                final app = snapshot.data![index] as ApplicationWith  Icon;
+                final app = snapshot.data![index];
                 return GestureDetector(
                   onTap: () {
-                    // 앱 아이콘을 탭하면 앱을 실행합니다.
-                    DeviceApps.openApp(app.packageName);
+                    InstalledApps.startApp(app.packageName);
                   },
                   child: Column(
                     children: [
                       // 앱 아이콘 표시
-                      Image.memory(app.icon, width: 50, height: 50),
+                      if (app.icon != null)
+                        Image.memory(app.icon!, width: 50, height: 50),
                       const SizedBox(height: 8),
                       // 앱 이름 표시
                       Text(
-                        app.appName,
+                        app.name!,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
