@@ -1,95 +1,99 @@
 import 'package:flutter/material.dart';
-// device_apps_plus의 API와 모델 클래스를 모두 import
-import 'package:device_apps_plus/device_apps_plus.dart';
-import 'package:device_apps_plus/src/application.dart';
-import 'package:device_apps_plus/src/application_with_icon.dart';
+import 'package:device_apps/device_apps.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '내 런처',
-      theme: ThemeData.dark(),
-      home: const LauncherScreen(),
+      title: 'Home Launcher',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const AppListScreen(),
     );
   }
 }
 
-class LauncherScreen extends StatefulWidget {
-  const LauncherScreen({super.key});
+class AppListScreen extends StatefulWidget {
+  const AppListScreen({Key? key}) : super(key: key);
 
   @override
-  _LauncherScreenState createState() => _LauncherScreenState();
+  _AppListScreenState createState() => _AppListScreenState();
 }
 
-class _LauncherScreenState extends State<LauncherScreen> {
-  List<Application> apps = [];
+class _AppListScreenState extends State<AppListScreen> {
+  late Future<List<Application>> _apps;
 
   @override
   void initState() {
     super.initState();
-    loadApps();
-  }
-
-  Future<void> loadApps() async {
-    final installedApps = await DeviceAppsPlus.getInstalledApplications(
-      includeSystemApps: true,
-      onlyAppsWithLaunchIntent: true,
+    // 앱 목록을 비동기적으로 가져옵니다.
+    _apps = DeviceApps.getInstalledApplications(
       includeAppIcons: true,
+      includeSystemApps: false, // 시스템 앱은 제외합니다.
+      onlyAppsWithLaunchIntent: true,
     );
-    setState(() {
-      apps = installedApps.cast<Application>();
-    });
-  }
-
-  void launchApp(String packageName) {
-    DeviceAppsPlus.openApp(packageName);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("내 런처")),
-      body: apps.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : GridView.builder(
-              padding: const EdgeInsets.all(8),
+      appBar: AppBar(
+        title: const Text('Installed Apps'),
+      ),
+      body: FutureBuilder<List<Application>>(
+        future: _apps,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No apps found.'));
+          } else {
+            // 앱 목록을 가져왔을 때 GridView로 표시합니다.
+            return GridView.builder(
+              padding: const EdgeInsets.all(16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 0.8,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
+                crossAxisCount: 4, // 한 줄에 4개의 앱을 표시합니다.
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                childAspectRatio: 0.8, // 아이콘과 텍스트의 비율을 조정합니다.
               ),
-              itemCount: apps.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                final app = apps[index] as ApplicationWithIcon;
+                final app = snapshot.data![index] as ApplicationWith  Icon;
                 return GestureDetector(
-                  onTap: () => launchApp(app.packageName),
+                  onTap: () {
+                    // 앱 아이콘을 탭하면 앱을 실행합니다.
+                    DeviceApps.openApp(app.packageName);
+                  },
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.memory(app.icon, width: 50, height: 50),
-                      ),
-                      const SizedBox(height: 4),
+                      // 앱 아이콘 표시
+                      Image.memory(app.icon, width: 50, height: 50),
+                      const SizedBox(height: 8),
+                      // 앱 이름 표시
                       Text(
                         app.appName,
-                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 );
               },
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }
