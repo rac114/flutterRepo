@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // device_apps_plus의 API와 모델 클래스를 모두 import
 import 'package:device_apps_plus/device_apps_plus.dart';
-import 'package:device_apps_plus/model/application.dart';
-import 'package:device_apps_plus/model/application_with_icon.dart';
+import 'package:device_apps_plus/src/application.dart';
+import 'package:device_apps_plus/src/application_with_icon.dart';
 
 void main() {
   runApp(const MyApp());
