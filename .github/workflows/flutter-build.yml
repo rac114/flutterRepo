@@ -1,13 +1,10 @@
 name: Flutter APK Build
-
 on:
   push:
     branches: [ master ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     # 1. 소스 체크아웃
     - uses: actions/checkout@v3
@@ -25,7 +22,18 @@ jobs:
       with:
         flutter-version: '3.32.7'
 
-    # 4. Pub 패키지 캐싱
+    # 4. Android SDK & NDK 설치
+    - name: Install Android SDK & NDK
+      run: |
+        yes | sdkmanager --licenses
+        sdkmanager --install "ndk;25.2.9519653" "cmake;3.22.1"
+
+    # 5. 환경 변수 등록 (NDK 경로 지정)
+    - name: Set NDK environment variable
+      run: |
+        echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
+
+    # 6. Pub 패키지 캐싱
     - name: Cache Pub packages
       uses: actions/cache@v4
       with:
@@ -37,7 +45,7 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    # 5. Gradle 캐싱
+    # 7. Gradle 캐싱
     - name: Cache Gradle
       uses: actions/cache@v4
       with:
@@ -48,11 +56,11 @@ jobs:
         restore-keys: |
           gradle-${{ runner.os }}-
 
-    # 6. APK 빌드
+    # 8. APK 빌드
     - name: Build APK
       run: flutter build apk --release
 
-    # 7. 결과 업로드
+    # 9. 결과 업로드
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
