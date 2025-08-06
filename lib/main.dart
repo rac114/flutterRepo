@@ -45,6 +45,7 @@ class _AppListScreenState extends State<AppListScreen> {
       appBar: AppBar(
         title: const Text('Installed Apps'),
       ),
+      backgroundColor: Colors.amber,
       body: FutureBuilder<List<AppInfo>>(
         future: _apps,
         builder: (context, snapshot) {
