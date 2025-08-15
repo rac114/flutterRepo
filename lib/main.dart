@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home Launcher',
       theme: ThemeData(
-        primarySwatch: Color.blue,
+        primarySwatch: Colors.blue,
       ),
       home: const AppListScreen(),
     );
@@ -45,7 +45,7 @@ class _AppListScreenState extends State<AppListScreen> {
       appBar: AppBar(
         title: const Text('Installed Apps'),
       ),
-      backgroundColor: Colors.fromRGBO(243,239,230,1),
+      backgroundColor: Color.fromRGBO(243,239,230,1),
       body: FutureBuilder<List<AppInfo>>(
         future: _apps,
         builder: (context, snapshot) {
