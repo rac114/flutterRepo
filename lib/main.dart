@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home Launcher',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Color.blue,
       ),
       home: const AppListScreen(),
     );
