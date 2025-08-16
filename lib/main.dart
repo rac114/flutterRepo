@@ -43,11 +43,6 @@ class _AppListScreenState extends State<AppListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Installed Apps'),
-        backgroundColor: const Color.fromRGBO(243, 239, 230, 1), // AppBar 색상 지정
-        elevation: 0, // AppBar 아래 그림자 제거
-      ),
       body: FutureBuilder<List<AppInfo>>(
         future: _apps,
         builder: (context, snapshot) {
@@ -61,7 +56,7 @@ class _AppListScreenState extends State<AppListScreen> {
             return GridView.builder(
               padding: const EdgeInsets.all(16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 6,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 16.0,
                 childAspectRatio: 0.8,
@@ -75,21 +70,12 @@ class _AppListScreenState extends State<AppListScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white, // 배경색을 흰색으로 지정
+                      color: Color.fromRGBO(243, 239, 230, 1), // 배경색을 회색으로 지정
                       borderRadius: BorderRadius.circular(15.0), // 모서리 둥글게
                       border: Border.all(
                         color: Colors.grey.withOpacity(0.3), // 테두리 색상
                         width: 1.0, // 테두리 두께
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
                       children: [
