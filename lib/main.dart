@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home Launcher',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey, // 색상 수정
+        scaffoldBackgroundColor: const Color.fromRGBO(243, 239, 230, 1),
       ),
       home: const AppListScreen(),
     );
@@ -44,8 +45,9 @@ class _AppListScreenState extends State<AppListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Installed Apps'),
+        backgroundColor: const Color.fromRGBO(243, 239, 230, 1), // AppBar 색상 지정
+        elevation: 0, // AppBar 아래 그림자 제거
       ),
-      backgroundColor: Color.fromRGBO(243,239,230,1),
       body: FutureBuilder<List<AppInfo>>(
         future: _apps,
         builder: (context, snapshot) {
@@ -71,20 +73,43 @@ class _AppListScreenState extends State<AppListScreen> {
                   onTap: () {
                     InstalledApps.startApp(app.packageName);
                   },
-                  child: Column(
-                    children: [
-                      // 앱 아이콘 표시
-                      if (app.icon != null)
-                        Image.memory(app.icon!, width: 50, height: 50),
-                      const SizedBox(height: 8),
-                      // 앱 이름 표시
-                      Text(
-                        app.name!,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // 배경색을 흰색으로 지정
+                      borderRadius: BorderRadius.circular(15.0), // 모서리 둥글게
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.3), // 테두리 색상
+                        width: 1.0, // 테두리 두께
                       ),
-                    ],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+                      children: [
+                        // 앱 아이콘 표시
+                        if (app.icon != null)
+                          Image.memory(app.icon!, width: 50, height: 50),
+                        const SizedBox(height: 8),
+                        // 앱 이름 표시
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Text(
+                            app.name!,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
