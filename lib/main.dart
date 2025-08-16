@@ -76,6 +76,7 @@ class _AppListScreenState extends State<AppListScreen> {
                         color: Colors.grey.withOpacity(0.3), // 테두리 색상
                         width: 1.0, // 테두리 두께
                       ),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
                       children: [
