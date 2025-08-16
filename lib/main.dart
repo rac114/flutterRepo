@@ -37,7 +37,7 @@ class _AppListScreenState extends State<AppListScreen> {
     super.initState();
     // 앱 목록을 비동기적으로 가져옵니다.
     // excludeSystemApps: true 로 시스템 앱을 제외합니다.
-    _apps = InstalledApps.getInstalledApps(true, true, "");
+    _apps = InstalledApps.getInstalledApps(false, false, "");
   }
 
   @override
@@ -70,7 +70,7 @@ class _AppListScreenState extends State<AppListScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(243, 239, 230, 1), // 배경색을 회색으로 지정
+                      color: Color.fromRGBO(243, 239, 230, 0), // 배경색을 회색으로 지정
                       borderRadius: BorderRadius.circular(15.0), // 모서리 둥글게
                       border: Border.all(
                         color: Colors.grey.withOpacity(0.3), // 테두리 색상
@@ -81,9 +81,9 @@ class _AppListScreenState extends State<AppListScreen> {
                       mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
                       children: [
                         // 앱 아이콘 표시
-                        if (app.icon != null)
-                          Image.memory(app.icon!, width: 50, height: 50),
-                        const SizedBox(height: 8),
+                        //if (app.icon != null)
+                        //  Image.memory(app.icon!, width: 50, height: 50),
+                        //const SizedBox(height: 8),
                         // 앱 이름 표시
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
