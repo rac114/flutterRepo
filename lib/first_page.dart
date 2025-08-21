@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/second_page.dart';
 
 class FirstPage extends StatelessWidget {
   @override
