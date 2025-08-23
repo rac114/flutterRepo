@@ -10,6 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: FirstPage(), // 앱의 시작 페이지
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.lightGreen
+      ),
     );
   }
 }
