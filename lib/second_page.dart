@@ -12,7 +12,7 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   late Future<List<AppInfo>> _apps;
-
+  final Map<String, Bool> _checkedStates = {};
   @override
   void initState() {
     super.initState();
@@ -49,19 +49,19 @@ class _SecondPageState extends State<SecondPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       final app = snapshot.data![index];
+                      final packageName = app.packageName!;
                       
                       // 체크박스 상태를 관리할 변수
-                      bool isChecked = false; // 예시
+                      bool isChecked = _checkedStates[packageName] ?? false;
 
                       return CheckboxListTile(
                         value: isChecked, // 체크박스의 현재 상태
                         onChanged: (bool? newValue) {
                           setState(() {
-                            isChecked = !isChecked;
+                            _checkedStates[packageName] = newValue!;
                           });
                         },
                         title: Text(app.name!),
-                        subtitle: const Text('list subtitle'),
                         secondary: Image.memory(app.icon!, width: 50, height:50), // 앱 아이콘을 여기에 추가
                       );
                     },
