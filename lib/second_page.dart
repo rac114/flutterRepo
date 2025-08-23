@@ -52,15 +52,20 @@ class _SecondPageState extends State<SecondPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       final app = snapshot.data![index];
-                      return GestureDetector(
-                        onTap: () {
-                          InstalledApps.startApp(app.packageName);
+                      
+                      // 체크박스 상태를 관리할 변수
+                      bool isChecked = false; // 예시
+
+                      return CheckboxListTile(
+                        value: isChecked, // 체크박스의 현재 상태
+                        onChanged: (bool? newValue) {
+                          setState(() {
+                            // isChecked 변수 업데이트
+                          });
                         },
-                        child: ListTile(
-                          leading: Image.memory(app.icon!, width: 50, height: 50),
-                          title: Text(app.name!),
-                          subtitle: const Text('list subtitle'),
-                        ),
+                        title: Text(app.name!),
+                        subtitle: const Text('list subtitle'),
+                        secondary: Image.memory(app.icon!, width: 50, height:50), // 앱 아이콘을 여기에 추가
                       );
                     },
                   );
