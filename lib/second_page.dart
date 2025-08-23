@@ -56,9 +56,7 @@ class _SecondPageState extends State<SecondPage> {
                         InstalledApps.startApp(app.packageName);
                       },
                       child: ListTile(
-                        leading: if (app.icon != null) {
-                          Image.memory(app.icon!, width: 50, height:50)
-                          },
+                        leading: Image.memory(app.icon!, width: 50, height:50),
                         title: Text(app.name!),
                         subtitle: const Text('list subtitle'),        
                       ),
