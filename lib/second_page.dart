@@ -18,15 +18,12 @@ class _SecondPageState extends State<SecondPage> {
     super.initState();
     // 앱 목록을 비동기적으로 가져옵니다.
     // excludeSystemApps: true 로 시스템 앱을 제외합니다.
-    _apps = InstalledApps.getInstalledApps(true, true, "");
+    _apps = InstalledApps.getInstalledApps(false, true, "");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Installed Apps'),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -60,7 +57,7 @@ class _SecondPageState extends State<SecondPage> {
                         value: isChecked, // 체크박스의 현재 상태
                         onChanged: (bool? newValue) {
                           setState(() {
-                            // isChecked 변수 업데이트
+                            isChecked = !isChecked;
                           });
                         },
                         title: Text(app.name!),
