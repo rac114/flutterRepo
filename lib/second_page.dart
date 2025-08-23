@@ -27,7 +27,7 @@ class _SecondPageState extends State<SecondPage> {
       appBar: AppBar(
         title: const Text('Installed Apps'),
       ),
-      body: column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
@@ -56,7 +56,9 @@ class _SecondPageState extends State<SecondPage> {
                         InstalledApps.startApp(app.packageName);
                       },
                       child: ListTile(
-                        leading: if (app.icon != null) {Image.memory(app.icon!, width: 50, height:50)},
+                        leading: if (app.icon != null) {
+                          Image.memory(app.icon!, width: 50, height:50)
+                          },
                         title: Text(app.name!),
                         subtitle: const Text('list subtitle'),        
                       ),
