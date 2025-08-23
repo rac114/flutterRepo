@@ -12,7 +12,7 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   late Future<List<AppInfo>> _apps;
-  final Map<String, Bool> _checkedStates = {};
+  final Map<String, bool> _checkedStates = {};
   @override
   void initState() {
     super.initState();
