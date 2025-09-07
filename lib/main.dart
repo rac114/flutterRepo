@@ -385,7 +385,7 @@ class _EditableButtonState extends State<EditableButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: (){
-        _showEditDialog();
+        _showEditDialog(context);
       },
       child: Container(
         width: 300,
