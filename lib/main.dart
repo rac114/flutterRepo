@@ -116,6 +116,9 @@ class _MyDraggableContainerState extends State<MyDraggableContainer> {
   }
 }
 */
+
+// pref counter example
+/*
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -187,6 +190,106 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+}
+*/
+
+// changable button example
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('텍스트 수정 예제'),
+        ),
+        body: Center(
+          child: EditableContainer(),
+        ),
+      ),
+    );
+  }
+}
+
+class EditableContainer extends StatefulWidget {
+  @override
+  _EditableContainerState createState() => _EditableContainerState();
+}
+
+class _EditableContainerState extends State<EditableContainer> {
+  // 화면에 표시될 텍스트 상태 변수
+  String _displayText = '길게 눌러 텍스트 수정하기';
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onLongPress: () {
+        _showEditDialog(context);
+      },
+      child: Container(
+        width: 300,
+        height: 100,
+        color: Colors.blue,
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(16),
+        child: Text(
+          _displayText,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showEditDialog(BuildContext context) {
+    // 텍스트 필드의 컨트롤러
+    final TextEditingController _textController =
+        TextEditingController(text: _displayText);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('텍스트 수정'),
+          content: TextField(
+            controller: _textController,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: "새로운 텍스트를 입력하세요",
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                // 새로운 텍스트로 상태 업데이트
+                setState(() {
+                  _displayText = _textController.text;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
