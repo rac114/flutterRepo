@@ -339,7 +339,7 @@ class _EditableButtonState extends State<EditableButton> {
   
   _setButton(String newText) async {
     final prefs = await SharedPreferences.getInstance();
-    setState();
+    setState((){_displayText = newText});
     await prefs.setString(_buttonKey, newText);
   }
 
