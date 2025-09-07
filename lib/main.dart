@@ -1,3 +1,5 @@
+// original code
+/*
 import 'package:flutter/material.dart';
 import 'package:myapp/second_page.dart';
 
@@ -36,7 +38,9 @@ class FirstPage extends StatelessWidget {
     );
   }
 }
+*/
 
+// drag example
 /*
 import 'package:flutter/material.dart';
 
@@ -112,3 +116,77 @@ class _MyDraggableContainerState extends State<MyDraggableContainer> {
   }
 }
 */
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _counter = 0;
+  final String _counterKey = 'counter_value';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCounter(); // 앱 시작 시 저장된 값 불러오기
+  }
+
+  // SharedPreferences에서 정수 값을 불러오는 함수
+  _loadCounter() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // 'counter_value' 키로 저장된 정수 값을 불러옵니다.
+      // 값이 없으면 기본값인 0을 사용합니다.
+      _counter = prefs.getInt(_counterKey) ?? 0;
+    });
+  }
+
+  // SharedPreferences에 정수 값을 저장하는 함수
+  _incrementCounter() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _counter++; // 카운터 값 증가
+    });
+    // 'counter_value' 키에 현재 _counter 값을 저장합니다.
+    await prefs.setInt(_counterKey, _counter);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('SharedPreferences 예제'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                '저장된 정수 값:',
+              ),
+              Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _incrementCounter,
+                child: const Text('값 증가 및 저장'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
