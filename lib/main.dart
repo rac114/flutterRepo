@@ -308,7 +308,12 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: EditableButton(),
+          child: Column(
+            children: [
+              EditableButton(),
+              EditableButton(),
+            ]
+          ),
         ),
       ),
     );
@@ -352,23 +357,23 @@ class _EditableButtonState extends State<EditableButton> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('텍스트 수정'),
+          title: Text('Button Settings'),
           content: TextField(
             controller: _textController,
             autofocus: true,
             decoration: InputDecoration(
-              hintText: "새로운 텍스트를 입력하세요",
+              hintText: "Enter new text",
             ),
           ),
           actions: [
             TextButton(
-              child: Text('취소'),
+              child: Text('cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('확인'),
+              child: Text('save'),
               onPressed: () {
                 // 새로운 텍스트로 상태 업데이트
                 setState(() {
