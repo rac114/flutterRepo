@@ -330,16 +330,16 @@ class _EditableButtonState extends State<EditableButton> {
     _loadButton();
   }
 
-  _loadButton async (){
+  _loadButton() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _displayText = prefs.getString(_buttonKey) ?? "null loaded";
     });
   }
   
-  _setButton async (String newText) {
+  _setButton(String newText) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(_buttonKey, newText);
+    await prefs.setString(_buttonKey, newText);
   }
 
   void _showEditDialog(BuildContext context) {
