@@ -196,7 +196,7 @@ class _MyAppState extends State<MyApp> {
 */
 
 // changable button example
-
+/*
 import 'package:flutter/material.dart';
 
 void main() {
@@ -290,6 +290,119 @@ class _EditableContainerState extends State<EditableContainer> {
           ],
         );
       },
+    );
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main(){
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: EditableButton(),
+        ),
+      ),
+    );
+  }
+}
+
+class EditableButton extends StatefulWidget{
+  @override
+  _EditableButtonState createState() => _EditableButtonState();
+}
+
+class _EditableButtonState extends State<EditableButton> {
+  String _displayText = "initial Text";
+  final String _buttonKey = "button key";
+
+  @override
+  void initState(){
+    super.initState();
+    _loadButton();
+  }
+
+  _loadButton async (){
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _displayText = prefs.getString(_buttonKey) ?? "null loaded";
+    });
+  }
+  
+  _setButton async (String newText) {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_buttonKey, newText);
+  }
+
+  void _showEditDialog(BuildContext context) {
+    // 텍스트 필드의 컨트롤러
+    final TextEditingController _textController =
+      TextEditingController(text: _displayText);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('텍스트 수정'),
+          content: TextField(
+            controller: _textController,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: "새로운 텍스트를 입력하세요",
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                // 새로운 텍스트로 상태 업데이트
+                setState(() {
+                  _setButton(_textController.text);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onLongPress: (){
+        _showEditDialog();
+      },
+      child: Container(
+        width: 300,
+        height: 100,
+        color: Colors.blue,
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(16),
+        child: Text(
+          _displayText,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
